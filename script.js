@@ -21,43 +21,48 @@ const commands = [
   {keys: 'g x', label: 'Go to the track being played (x, as in a cross to locate the track/trax)'}
 ]
 
-function suggest(query, populateResults) {
-  let suggestions = commands
-  
-  const searchResults = window.fuzzysort.go(query, commands, {key: 'label'})
-  if (searchResults.total > 0) {
-    suggestions = searchResults.map(r => r.obj)
+fuzzyAutocomplete(commands)
+
+function fuzzyAutocomplete(commands) {
+  function suggest(query, populateResults) {
+    let suggestions = commands
+
+    const searchResults = window.fuzzysort.go(query, commands, {key: 'label'})
+    if (searchResults.total > 0) {
+      suggestions = searchResults.map(r => r.obj)
+    }
+
+    console.log({suggestions})
+    populateResults(suggestions)
   }
-  
-  console.log({suggestions})
-  populateResults(suggestions)
-}
 
-function inputValueTemplate(value) {
-  // console.log({value})
-  if (value) return value.label
-  return value
-}
-
-function suggestionTemplate (suggestion) {
-  return `${suggestion.label} <kbd>${suggestion.keys}</kbd>`
-}
-
-window.accessibleAutocomplete({
-  element: document.querySelector('#my-autocomplete-container'),
-  id: 'my-autocomplete', // To match it to the existing <label>.
-  source: suggest,
-  // autoSelect: true,
-  showAllValues: true,
-  // displayMenu: 'overlay',
-  templates: {
-    inputValue: inputValueTemplate,
-    suggestion: suggestionTemplate
-  },
-  onConfirm: function(confirmed) {
-    console.log({confirmed})
-    let el = document.querySelector('#my-autocomplete-confirmed')
-    el.textContent = suggestionTemplate(confirmed)
-    if (confirmed.command) confirmed.command()
+  function inputValueTemplate(value) {
+    // console.log({value})
+    if (value) return value.label
+    return value
   }
-})
+
+  function suggestionTemplate (suggestion) {
+    return `${suggestion.label} <kbd>${suggestion.keys}</kbd>`
+  }
+
+  window.accessibleAutocomplete({
+    element: document.querySelector('#my-autocomplete-container'),
+    id: 'my-autocomplete', // To match it to the existing <label>.
+    source: suggest,
+    autoselect: true,
+    showAllValues: true,
+    // displayMenu: 'overlay',
+    templates: {
+      inputValue: inputValueTemplate,
+      suggestion: suggestionTemplate
+    },
+    onConfirm: function(confirmed) {
+      console.log({confirmed})
+      let el = document.querySelector('#my-autocomplete-confirmed')
+      el.textContent = suggestionTemplate(confirmed)
+      if (confirmed.command) confirmed.command()
+    }
+  })
+
+}
