@@ -25,9 +25,10 @@ const commands = [
 	}
 ]
 
+const x = commands.map(c => c.label)
 
 function suggest(query, populateResults) {
-  const results = window.fuzzysort.go(query, commands)
+  const results = window.fuzzysort.go(query, commands, {key: 'label'})
   console.log(results)
   // const filteredResults = commands.filter(result => {
   //   return result.label.indexOf(query) !== -1
@@ -35,7 +36,8 @@ function suggest(query, populateResults) {
   // const labels = filteredResults.map(result => result.label)
   // console.log({filteredResults})
   // populateResults(filteredResults)
-  populateResults(commands)
+  // const filtered = commands.filter(c => c.label
+  populateResults(results)
 }
 
 function inputValueTemplate(value) {
