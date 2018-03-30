@@ -28,12 +28,14 @@ const defaultCommands = [
 
 function suggest (query, populateResults) {
   const filteredResults = defaultCommands.filter(result => {
-    console.log({result, query})
-    return result.label.toLowerCase().indexOf(query.toLowerCase()) !== -1
+    // console.log('suggest', {result, query})
+    return result.label.indexOf(query) !== -1
   })
-  // console.log(filteredResults)
+  // console.log({filteredResults})
   populateResults(filteredResults)
 }
+
+function suggestionTe
 
 window.accessibleAutocomplete({
   element: document.querySelector('#my-autocomplete-container'),
@@ -42,12 +44,16 @@ window.accessibleAutocomplete({
   source: suggest,
   showAllValues: true,
   templates: {
-    suggestion(suggestion) {
-      console.log({suggestion})
-      return `<b>${suggestion.label}</b> <kbd>${suggestion.shortcut}</kbd>`
+    inputValue: function(val) {
+      if (val) return val.label
+      return false
+    },
+    suggestion: function(suggestion) {
+      // console.log({suggestion})
+      return 
     }
   },
-  onConfirm(confirmed) {
+  onConfirm: function(confirmed) {
     console.log({confirmed})
   }
 })
