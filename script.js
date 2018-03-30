@@ -1,16 +1,16 @@
 // import accessibleAutocomplete from 'accessible-autocomplete'
 
-window.accessibleAutocomplete.enhanceSelectElement({
-  selectElement: document.querySelector('#location-picker')
-})
+// window.accessibleAutocomplete.enhanceSelectElement({
+//   selectElement: document.querySelector('#location-picker')
+// })
 
-// const defaultCommands = [
-//   'France',
-//   'Germany',
-//   'United Kingdom'
-// ]
+const countries = [
+  'France',
+  'Germany',
+  'United Kingdom'
+]
 
-const defaultCommands = [
+const commands = [
 	{
 		label: "Open something",
 		shortcut: 'Shift+O'
@@ -27,12 +27,14 @@ const defaultCommands = [
 
 
 function suggest (query, populateResults) {
-  const filteredResults = defaultCommands.filter(result => {
+  const filteredResults = commands.filter(result => {
     // console.log('suggest', {result, query})
     return result.label.indexOf(query) !== -1
   })
+  const labels = filteredResults.map(result => result.label)
   // console.log({filteredResults})
-  populateResults(filteredResults)
+  // populateResults(filteredResults)
+  populateResults(labels)
 }
 
 function suggestionTemplate (suggestion) {
@@ -42,16 +44,16 @@ function suggestionTemplate (suggestion) {
 window.accessibleAutocomplete({
   element: document.querySelector('#my-autocomplete-container'),
   id: 'my-autocomplete', // To match it to the existing <label>.
-  // source: defaultCommands
+  // source: countries,
   source: suggest,
   showAllValues: true,
-  templates: {
-    inputValue: function(val) {
-      console.log({val})
-      if (val) return val.label
-    },
-    suggestion: suggestionTemplate
-  },
+  // templates: {
+  //   inputValue: function(val) {
+  //     console.log({val})
+  //     if (val) return val.label
+  //   },
+  //   suggestion: suggestionTemplate
+  // },
   onConfirm: function(confirmed) {
     console.log({confirmed})
   }
