@@ -11,10 +11,35 @@
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
+    
+ <p>
+   <select id="commands">
+  <option value="() => { alert('send help plx')}" data-keys="shift-?">Help</option>
+  <option value="" data-keys="p'">Play/pause the session</option>
+  <option value="" data-keys="n'">Play next track in current radio</option>
+  <option value="" data-keys="s'">Shuffle current track selection</option>
+  <option value="" data-keys="m'">(un)mute the volume</option>
+  <option value="" data-keys="r'">Play a random radio channel</option>
+  <option value="" data-keys="f'">Cycle through formats (default, fullscreen, minimized)</option>
+  <option value="" data-keys="g h">Go to home</option>
+  <option value="" data-keys="g r">Go to all radios</option>
+  <option value="" data-keys="g m">Go to map</option>
+  <option value="" data-keys="g y">Go to history (y, as in your web-browser)</option>
+  <option value="" data-keys="g i">Go to my radio (i, as in I, me)</option>
+  <option value="" data-keys="g s">Go to my favorite radios (s, as in starred)</option>
+  <option value="" data-keys="g t">Go to my tracks</option>
+  <option value="" data-keys="g a">Go to add</option>
+  <option value="" data-keys="g f">Go to feedback</option>
+  <option value="" data-keys="g c">Go to current radio (the one being played)</option>
+  <option value="" data-keys="g x">Go to the track being played (x, as in a cross to locate the track/trax</option>
+</select>
+    </p>
 
-    <p>you chose: <i id="my-autocomplete-confirmed"></i></p>
+    
     <label for="my-autocomplete">Choose an action</label>
     <div id="my-autocomplete-container"></div>
+    
+    <p>you chose: <b id="my-autocomplete-confirmed"></b></p>
     
     
     <script src="/script.js" defer></script>

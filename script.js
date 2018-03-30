@@ -1,5 +1,9 @@
 // yarn add accessible-autocomplete fuzzysort
 
+accessibleAutocomplete.enhanceSelectElement({
+  selectElement: document.querySelector('#location-picker')
+})
+
 const commands = [
   {keys: '', label: 'Help', command: () => { alert('send help plx') }},
   {keys: 'p', label: 'Play/pause the session'},
@@ -21,44 +25,45 @@ const commands = [
   {keys: 'g x', label: 'Go to the track being played (x, as in a cross to locate the track/trax)'}
 ]
 
-
 // <label for="my-autocomplete">Choose an action</label>
 // <div id="my-autocomplete-container"></div>
 
-fuzzyAutocomplete()
-
-function fuzzyAutocomplete(commands) {
-  function suggest(query, populateResults) {
-    const searchResults = window.fuzzysort.go(query, commands, {key: 'label'})
-    if (searchResults.total) {
-      // Transform data back from fuzzysort
-      populateResults(searchResults.map(r => r.obj))
-    } else {
-      populateResults(commands)
-    }
+function suggest(query, populateResults) {
+  const searchResults = window.fuzzysort.go(query, commands, {key: 'label'})
+  if (searchResults.total) {
+    // Transform data back from fuzzysort
+    populateResults(searchResults.map(r => r.obj))
+  } else {
+    populateResults(commands)
   }
-
-  window.accessibleAutocomplete({
-    element: document.querySelector('#my-autocomplete-container'),
-    id: 'my-autocomplete', // To match it to the existing <label>.
-    source: suggest,
-    autoselect: true,
-    showAllValues: true,
-    // displayMenu: 'overlay',
-    templates: {
-      inputValue(value) {
-        if (value) return value.label
-        return value
-      },
-      suggestion(suggestion) {
-        return `${suggestion.label} <kbd>${suggestion.keys}</kbd>`
-      }
-    },
-    onConfirm: function(confirmed) {
-      console.log({confirmed})
-      let el = document.querySelector('#my-autocomplete-confirmed')
-      el.textContent = this.templates.suggestion(confirmed)
-      if (confirmed.command) confirmed.command()
-    }
-  })
 }
+
+window.accessibleAutocomplete({
+  id: 'my-autocomplete', // To match it to the existing <label>.
+  element: document.querySelector('#my-autocomplete-container'),
+  source: suggest,
+  
+  autoselect: true,
+  showAllValues: true,
+  // displayMenu: 'overlay',
+  
+  templates: {
+    inputValue: (val) => {
+      if (val && val.label) return val.label
+      return val
+    },
+    suggestion: (s) => {
+      if (!s) return s
+      return `${s.label} <kbd>${s.keys}</kbd>`
+    }
+  },
+  
+  onConfirm: (confirmed) => {
+    console.log({confirmed})
+    if (confirmed) {
+      let el = document.querySelector('#my-autocomplete-confirmed')
+      el.textContent = confirmed.label
+    }
+    if (confirmed && confirmed.command) confirmed.command()
+  }
+})
