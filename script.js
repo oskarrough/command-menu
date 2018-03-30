@@ -12,29 +12,35 @@ const countries = [
 
 const commands = [
 	{
-		label: "Open something",
+		label: "open something",
 		shortcut: 'Shift+O'
 	},
 	{
-		label: "New Tab",
+		label: "new tab",
 		shortcut: 'CMD+N'
 	},
 	{
-		label: "New Window",
+		label: "new window",
     shortcut: 'CMD+Shift+O'
 	}
 ]
 
 
-function suggest (query, populateResults) {
-  const filteredResults = commands.filter(result => {
-    // console.log('suggest', {result, query})
-    return result.label.indexOf(query) !== -1
-  })
-  const labels = filteredResults.map(result => result.label)
+function suggest(query, populateResults) {
+  const results = window.fuzzysort.go(query, commands)
+  console.log(results)
+  // const filteredResults = commands.filter(result => {
+  //   return result.label.indexOf(query) !== -1
+  // })
+  // const labels = filteredResults.map(result => result.label)
   // console.log({filteredResults})
   // populateResults(filteredResults)
-  populateResults(labels)
+  populateResults(commands)
+}
+
+function inputValueTemplate(value) {
+  console.log({value})
+  return "test"
 }
 
 function suggestionTemplate (suggestion) {
@@ -47,13 +53,10 @@ window.accessibleAutocomplete({
   // source: countries,
   source: suggest,
   showAllValues: true,
-  // templates: {
-  //   inputValue: function(val) {
-  //     console.log({val})
-  //     if (val) return val.label
-  //   },
-  //   suggestion: suggestionTemplate
-  // },
+  templates: {
+    // inputValue: inputValueTemplate,
+    suggestion: suggestionTemplate
+  },
   onConfirm: function(confirmed) {
     console.log({confirmed})
   }
