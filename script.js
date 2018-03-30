@@ -21,29 +21,21 @@ const commands = [
   {keys: 'g x', label: 'Go to the track being played (x, as in a cross to locate the track/trax)'}
 ]
 
-fuzzyAutocomplete(commands)
+
+// <label for="my-autocomplete">Choose an action</label>
+// <div id="my-autocomplete-container"></div>
+
+fuzzyAutocomplete()
 
 function fuzzyAutocomplete(commands) {
   function suggest(query, populateResults) {
-    let suggestions = commands
-
     const searchResults = window.fuzzysort.go(query, commands, {key: 'label'})
-    if (searchResults.total > 0) {
-      suggestions = searchResults.map(r => r.obj)
+    if (searchResults.total) {
+      // Transform data back from fuzzysort
+      populateResults(searchResults.map(r => r.obj))
+    } else {
+      populateResults(commands)
     }
-
-    console.log({suggestions})
-    populateResults(suggestions)
-  }
-
-  function inputValueTemplate(value) {
-    // console.log({value})
-    if (value) return value.label
-    return value
-  }
-
-  function suggestionTemplate (suggestion) {
-    return `${suggestion.label} <kbd>${suggestion.keys}</kbd>`
   }
 
   window.accessibleAutocomplete({
@@ -54,15 +46,19 @@ function fuzzyAutocomplete(commands) {
     showAllValues: true,
     // displayMenu: 'overlay',
     templates: {
-      inputValue: inputValueTemplate,
-      suggestion: suggestionTemplate
+      inputValue(value) {
+        if (value) return value.label
+        return value
+      },
+      suggestion(suggestion) {
+        return `${suggestion.label} <kbd>${suggestion.keys}</kbd>`
+      }
     },
     onConfirm: function(confirmed) {
       console.log({confirmed})
       let el = document.querySelector('#my-autocomplete-confirmed')
-      el.textContent = suggestionTemplate(confirmed)
+      el.textContent = this.templates.suggestion(confirmed)
       if (confirmed.command) confirmed.command()
     }
   })
-
 }
