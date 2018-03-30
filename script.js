@@ -35,7 +35,9 @@ function suggest (query, populateResults) {
   populateResults(filteredResults)
 }
 
-function suggestionTe
+function suggestionTemplate (suggestion) {
+  return `<b>${suggestion.label}</b> <kbd>${suggestion.shortcut}</kbd>`
+}
 
 window.accessibleAutocomplete({
   element: document.querySelector('#my-autocomplete-container'),
@@ -48,10 +50,7 @@ window.accessibleAutocomplete({
       if (val) return val.label
       return false
     },
-    suggestion: function(suggestion) {
-      // console.log({suggestion})
-      return 
-    }
+    suggestion: suggestionTemplate
   },
   onConfirm: function(confirmed) {
     console.log({confirmed})
