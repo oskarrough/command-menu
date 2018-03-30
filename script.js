@@ -1,6 +1,7 @@
 // yarn add accessible-autocomplete fuzzysort
 
 const commands = [
+  {keys: '', label: 'Help', command: () => { alert('send help plx') }},
   {keys: 'p', label: 'Play/pause the session'},
   {keys: 'n', label: 'Play next track in current radio'},
   {keys: 's', label: 'Shuffle current track selection'},
@@ -46,7 +47,9 @@ window.accessibleAutocomplete({
   element: document.querySelector('#my-autocomplete-container'),
   id: 'my-autocomplete', // To match it to the existing <label>.
   source: suggest,
+  // autoSelect: true,
   showAllValues: true,
+  // displayMenu: 'overlay',
   templates: {
     inputValue: inputValueTemplate,
     suggestion: suggestionTemplate
@@ -55,5 +58,6 @@ window.accessibleAutocomplete({
     console.log({confirmed})
     let el = document.querySelector('#my-autocomplete-confirmed')
     el.textContent = suggestionTemplate(confirmed)
+    if (confirmed.command) confirmed.command()
   }
 })

@@ -1,5 +1,5 @@
 .autocomplete__menu {
-  max-height: 300px;
+  max-height: 240px;
 }
 
 .autocomplete__option {
@@ -7,6 +7,10 @@
   flex-flow: row nowrap;
   justify-content: space-between;
   padding: 0.2em 0.3em 0.3em;
+}
+
+.autocomplete__option--odd {
+  background-color: initial;
 }
 
 .autocomplete__option kbd {
@@ -25,5 +29,6 @@
 .autocomplete__option:hover {
   background-color: hsl(0, 0%, 85%);
   color: initial;
-  border-color: initial;
+  border-color: #BFC1C3;
 }
+
