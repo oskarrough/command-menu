@@ -47,8 +47,8 @@ window.accessibleAutocomplete({
   showAllValues: true,
   templates: {
     inputValue: function(val) {
+      console.log({val})
       if (val) return val.label
-      return false
     },
     suggestion: suggestionTemplate
   },
