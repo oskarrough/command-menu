@@ -4,15 +4,34 @@ window.accessibleAutocomplete.enhanceSelectElement({
   selectElement: document.querySelector('#location-picker')
 })
 
+// const defaultCommands = [
+//   'France',
+//   'Germany',
+//   'United Kingdom'
+// ]
+
 const defaultCommands = [
-  'France',
-  'Germany',
-  'United Kingdom'
+	{
+		label: "Open something",
+		shortcut: 'Shift+O'
+	},
+	{
+		label: "New Tab",
+		shortcut: 'CMD+N'
+	},
+	{
+		label: "New Window",
+    shortcut: 'CMD+Shift+O'
+	}
 ]
 
+
 function suggest (query, populateResults) {
-  const filteredResults = defaultCommands.filter(result => result.indexOf(query) !== -1)
-  console.log(filteredResults)
+  const filteredResults = defaultCommands.filter(result => {
+    console.log({result, query})
+    return result.label.toLowerCase().indexOf(query.toLowerCase()) !== -1
+  })
+  // console.log(filteredResults)
   populateResults(filteredResults)
 }
 
@@ -21,5 +40,14 @@ window.accessibleAutocomplete({
   id: 'my-autocomplete', // To match it to the existing <label>.
   // source: defaultCommands
   source: suggest,
-  showAllValues: true
+  showAllValues: true,
+  templates: {
+    suggestion(suggestion) {
+      console.log({suggestion})
+      return `<b>${suggestion.label}</b> <kbd>${suggestion.shortcut}</kbd>`
+    }
+  },
+  onConfirm(confirmed) {
+    console.log({confirmed})
+  }
 })
