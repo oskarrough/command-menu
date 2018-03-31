@@ -1,7 +1,7 @@
 // yarn add accessible-autocomplete fuzzysort
 
 const commands = [
-  {keys: '', label: 'Help', command: () => { alert('send help plx') }},
+  {keys: '', label: 'Help', command: () => { console.log('send help plx') }},
   {keys: 'p', label: 'Play/pause the session'},
   {keys: 'n', label: 'Play next track in current radio'},
   {keys: 's', label: 'Shuffle current track selection'},
@@ -25,13 +25,9 @@ const commands = [
 // <div id="my-autocomplete-container"></div>
 
 function suggest(query, populateResults) {
-  const searchResults = window.fuzzysort.go(query, commands, {key: 'label'})
-  if (searchResults.total) {
-    // Transform data back from fuzzysort
-    populateResults(searchResults.map(r => r.obj))
-  } else {
-    populateResults(commands)
-  }
+  let results = window.fuzzysort.go(query, commands, {key: 'label'})
+  results = results.total ? results.map(r => r.obj) : commands
+  populateResults(results)
 }
 
 window.accessibleAutocomplete({
@@ -39,9 +35,9 @@ window.accessibleAutocomplete({
   id: 'my-autocomplete', // To match it to the existing <label>.
   source: suggest,
   autoselect: true,
+  confirmOnBlur: true, // should be true for touch at least
   showAllValues: true,
   // displayMenu: 'overlay',
-  
   templates: {
     inputValue: (val) => {
       if (val && val.label) return val.label
@@ -52,7 +48,6 @@ window.accessibleAutocomplete({
       return `${s.label} <kbd>${s.keys}</kbd>`
     }
   },
-  
   onConfirm: (confirmed) => {
     console.log({confirmed})
     if (confirmed) {
