@@ -35,10 +35,9 @@ function suggest(query, populateResults) {
 }
 
 window.accessibleAutocomplete({
-  id: 'my-autocomplete', // To match it to the existing <label>.
   element: document.querySelector('#my-autocomplete-container'),
+  id: 'my-autocomplete', // To match it to the existing <label>.
   source: suggest,
-  
   autoselect: true,
   showAllValues: true,
   // displayMenu: 'overlay',
