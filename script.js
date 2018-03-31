@@ -1,9 +1,5 @@
 // yarn add accessible-autocomplete fuzzysort
 
-// window.accessibleAutocomplete.enhanceSelectElement({
-//   selectElement: document.querySelector('#commands')
-// })
-
 const commands = [
   {keys: '', label: 'Help', command: () => { alert('send help plx') }},
   {keys: 'p', label: 'Play/pause the session'},
