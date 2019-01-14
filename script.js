@@ -48,6 +48,7 @@ class Autocomplete extends HTMLElement {
       // displayMenu: 'overlay',
       templates: {
         inputValue: (val) => {
+          console.log(val)
           if (val && val.label) return val.label
           return val
         },
