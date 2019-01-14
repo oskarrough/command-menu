@@ -3,6 +3,10 @@ body,
   font-family: system-ui, segoe ui, sans-serif;
 }
 
+.autocomplete__wrapper {
+  max-width: 400px;
+}
+
 .autocomplete__menu {
   max-height: 240px;
 }

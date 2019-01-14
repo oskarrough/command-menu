@@ -26,7 +26,7 @@ const commands = [
 // <div id="my-autocomplete-container"></div>
 
 function suggest(query, populateResults) {
-  let results = window.fuzzysort.go(query, commands, {key: 'label'})
+  let results = fuzzysort.go(query, commands, {key: 'label'})
   results = results.total ? results.map(r => r.obj) : commands
   populateResults(results)
 }
@@ -36,10 +36,11 @@ class Autocomplete extends HTMLElement {
     this.enableAutocomplete()
   }
   enableAutocomplete() {
-    window.accessibleAutocomplete({
-      element: this,
-      id: 'my-autocomplete', // To match it to the existing <label>.
-      source: suggest,
+    accessibleAutocomplete.enhanceSelectElement({
+      selectElement: this.querySelector('select'),
+      // element: this,
+      // id: 'my-autocomplete', // To match it to the existing <label>.
+      // source: suggest,
       placeholder: 'Search for a command',
       autoselect: true,
       confirmOnBlur: true, // should be true for touch at least
