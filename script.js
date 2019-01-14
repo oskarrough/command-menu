@@ -1,8 +1,8 @@
 // yarn add accessible-autocomplete fuzzysort
-const {accessibleAutocomplete, fuzzysort} = window
+const {accessibleAutocomplete, fuzzysort, Find} = window
 
 const commands = [
-  {keys: '', label: 'Help', command: () => { console.log('send help plx') }},
+  {keys: '', label: 'Help', command: () => { confirm('send help plx') }},
   {keys: 'p', label: 'Play/pause the session'},
   {keys: 'n', label: 'Play next track in current radio'},
   {keys: 's', label: 'Shuffle current track selection'},
@@ -22,25 +22,30 @@ const commands = [
   {keys: 'g x', label: 'Go to the track being played (x, as in a cross to locate the track/trax)'}
 ]
 
+const findCommands = Object.entries(Find.symbols['!'].engines)
+  .map(([keys, label]) => {
+    return {keys, label}
+  })
+
 // <label for="my-autocomplete">Choose an action</label>
 // <div id="my-autocomplete-container"></div>
 
-function suggest(query, populateResults) {
-  let results = fuzzysort.go(query, commands, {key: 'label'})
-  results = results.total ? results.map(r => r.obj) : commands
-  populateResults(results)
-}
+
 
 class Autocomplete extends HTMLElement {
   connectedCallback() {
     this.enableAutocomplete()
   }
   enableAutocomplete() {
-    accessibleAutocomplete.enhanceSelectElement({
-      selectElement: this.querySelector('select'),
-      // element: this,
-      // id: 'my-autocomplete', // To match it to the existing <label>.
-      // source: suggest,
+    function suggest(query, populateResults, list = commands) {
+      let results = window.fuzzysort.go(query, list, {key: 'label'})
+      results = results.total ? results.map(r => r.obj) : list
+      populateResults(results)
+    }
+    window.accessibleAutocomplete({
+      element: this,
+      id: 'my-autocomplete', // To match it to the existing <label>.
+      source: suggest,
       placeholder: 'Search for a command',
       autoselect: true,
       confirmOnBlur: true, // should be true for touch at least
@@ -48,7 +53,6 @@ class Autocomplete extends HTMLElement {
       // displayMenu: 'overlay',
       templates: {
         inputValue: (val) => {
-          console.log(val)
           if (val && val.label) return val.label
           return val
         },
