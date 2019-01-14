@@ -1,7 +1,7 @@
 // yarn add accessible-autocomplete fuzzysort
 const {accessibleAutocomplete, fuzzysort, Find} = window
 
-const commands = [
+const radio4000Commands = [
   {keys: '', label: 'Help', command: () => { confirm('send help plx') }},
   {keys: 'p', label: 'Play/pause the session'},
   {keys: 'n', label: 'Play next track in current radio'},
@@ -30,25 +30,30 @@ const findCommands = Object.entries(Find.symbols['!'].engines)
 // <label for="my-autocomplete">Choose an action</label>
 // <div id="my-autocomplete-container"></div>
 
-
-
 class Autocomplete extends HTMLElement {
+  constructor() {
+    super()
+    // how do we pass this in?
+    this.list = findCommands
+  }
   connectedCallback() {
     this.enableAutocomplete()
   }
   enableAutocomplete() {
-    function suggest(query, populateResults, list = commands) {
-      let results = window.fuzzysort.go(query, list, {key: 'label'})
+    const list = this.list
+    function suggest(query, populateResults) {
+      let results = fuzzysort.go(query, list, {key: 'label'})
       results = results.total ? results.map(r => r.obj) : list
       populateResults(results)
     }
-    window.accessibleAutocomplete({
+    
+    accessibleAutocomplete({
       element: this,
       id: 'my-autocomplete', // To match it to the existing <label>.
       source: suggest,
-      placeholder: 'Search for a command',
+      // placeholder: 'Search for a command',
       autoselect: true,
-      confirmOnBlur: true, // should be true for touch at least
+      confirmOnBlur: false, // should be true for touch at least
       showAllValues: true,
       // displayMenu: 'overlay',
       templates: {
