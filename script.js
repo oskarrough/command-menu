@@ -1,5 +1,5 @@
 // yarn add accessible-autocomplete fuzzysort
-const {accessibleAutocomplete, fuzzysort, Find} = window
+const {accessibleAutocomplete, fuzzysort} = window
 
 const radio4000Commands = [
   {keys: '', label: 'Help', command: () => { confirm('send help plx') }},
@@ -22,11 +22,6 @@ const radio4000Commands = [
   {keys: 'g x', label: 'Go to the track being played (x, as in a cross to locate the track/trax)'}
 ]
 
-// Convert the search engines from find.internet4000.com into a format our command palette understands.
-const findCommands = Object.entries(Find.symbols['!'].engines)
-  .map(([keys, label]) => {
-    return {keys, label}
-  })
 
 // <label for="my-autocomplete">Choose an action</label>
 // <div id="my-autocomplete-container"></div>
@@ -34,8 +29,6 @@ const findCommands = Object.entries(Find.symbols['!'].engines)
 class Autocomplete extends HTMLElement {
   constructor() {
     super()
-    // how do we pass this in?
-    // this.list = findCommands
     this.list = radio4000Commands
   }
   connectedCallback() {
