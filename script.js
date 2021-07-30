@@ -1,41 +1,17 @@
 // yarn add accessible-autocomplete fuzzysort
 const {accessibleAutocomplete, fuzzysort} = window
 
-const radio4000Commands = [
-  {keys: '', label: 'Help', command: () => { confirm('send help plx') }},
-  {keys: 'p', label: 'Play/pause the session'},
-  {keys: 'n', label: 'Play next track in current radio'},
-  {keys: 's', label: 'Shuffle current track selection'},
-  {keys: 'm', label: '(un)mute the volume'},
-  {keys: 'r', label: 'Play a random radio channel'},
-  {keys: 'f', label: 'Cycle through formats (default, fullscreen, minimized)'},
-  {keys: 'g h', label: 'Go to home'},
-  {keys: 'g r', label: 'Go to all radios'},
-  {keys: 'g m', label: 'Go to map'},
-  {keys: 'g y', label: 'Go to history (y, as in your web-browser)'},
-  {keys: 'g i', label: 'Go to my radio (i, as in I, me)'},
-  {keys: 'g s', label: 'Go to my favorite radios (s, as in starred)'},
-  {keys: 'g t', label: 'Go to my tracks'},
-  {keys: 'g a', label: 'Go to add'},
-  {keys: 'g f', label: 'Go to feedback'},
-  {keys: 'g c', label: 'Go to current radio (the one being played)'},
-  {keys: 'g x', label: 'Go to the track being played (x, as in a cross to locate the track/trax)'}
-]
-
-
 // <label for="my-autocomplete">Choose an action</label>
 // <div id="my-autocomplete-container"></div>
 
 class Autocomplete extends HTMLElement {
   constructor() {
     super()
-    this.list = radio4000Commands
   }
   connectedCallback() {
-    this.enableAutocomplete()
+    if (this.list) this.enable(this.list)
   }
-  enableAutocomplete() {
-    const list = this.list
+  enable(list) {
     function suggest(query, populateResults) {
       let results = fuzzysort.go(query, list, {key: 'label'})
       results = results.total ? results.map(r => r.obj) : list
