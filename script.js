@@ -17,11 +17,17 @@ class Autocomplete extends HTMLElement {
   connectedCallback() {
     // if (this.getAttribute('modal')) this.enableModal()
     if (this.list) this.enable(this.list)
+    document.addEventListener('keydown', this.handleShortcut)
   }
   enableModal() {
-    document.addEventListener('keyup', this.handleShortcut)
+    
   }
   handleShortcut(event) {
+    const pressingCtrl = event.key === 'Control'
+    const pressingK = event.key === 'k'
+    if (pressingCtrl && pressingK) {
+      console.log('yes')
+    }
     console.log(event)
   }
   enable(list) {

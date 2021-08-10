@@ -8,6 +8,7 @@ auto-complete[modal] {
   left: 1rem;
   right: 1rem;
   display: flex;
+  display: none;
 }
 
 auto-complete[modal] .autocomplete__wrapper {
@@ -39,6 +40,7 @@ auto-complete[modal] .autocomplete__wrapper {
   padding: 1em 0.6em;
   border-radius: 8px;
   font-size: 22px;
+/*   background: white; */
 }
 
 .autocomplete__input--focused {
@@ -48,7 +50,7 @@ auto-complete[modal] .autocomplete__wrapper {
 }
 
 .autocomplete__hint {
-
+  display: none;
 }
 
 .autocomplete__option {
@@ -79,9 +81,8 @@ auto-complete[modal] .autocomplete__wrapper {
 
 .autocomplete__option--focused,
 .autocomplete__option:hover {
-  background-color: hsl(0, 0%, 90%);
+  background-color: hsl(0, 0%, 93%);
   color: initial;
-  border-color: #BFC1C3;
 }
 
 .autocomplete__dropdown-arrow-down {
