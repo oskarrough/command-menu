@@ -11,6 +11,10 @@ auto-complete[modal] {
   display: none;
 }
 
+auto-complete[modal].is-open {
+  display: block;
+}
+
 auto-complete[modal] .autocomplete__wrapper {
 /*   border: 1px solid red; */
   border-radius: 8px;

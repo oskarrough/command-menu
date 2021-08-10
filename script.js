@@ -13,22 +13,25 @@ const {accessibleAutocomplete, fuzzysort} = window
 class Autocomplete extends HTMLElement {
   constructor() {
     super()
+    this.handleShortcut = this.handleShortcut.bind(this)
   }
   connectedCallback() {
-    // if (this.getAttribute('modal')) this.enableModal()
     if (this.list) this.enable(this.list)
-    document.addEventListener('keydown', this.handleShortcut)
+    if (this.getAttribute('modal')) 
+     console.log(this.hasAttribute('modal'))
+      document.addEventListener('keydown', this.handleShortcut)
+    
   }
   enableModal() {
     
   }
   handleShortcut(event) {
-    const pressingCtrl = event.key === 'Control'
-    const pressingK = event.key === 'k'
-    if (pressingCtrl && pressingK) {
-      console.log('yes')
+    if (event.ctrlKey && event.key == "k") {
+      event.preventDefault()
+      console.log(this)
+      this.classList.toggle('is-open')
+      this.querySelector('.autocomplete__input').focus()
     }
-    console.log(event)
   }
   enable(list) {
     function suggest(query, populateResults) {
