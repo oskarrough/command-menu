@@ -4,12 +4,25 @@ const {accessibleAutocomplete, fuzzysort} = window
 // <label for="my-autocomplete">Choose an action</label>
 // <div id="my-autocomplete-container"></div>
 
+// const exampleCommands = [
+//   {keys: 'h', label: 'Help', command: () => { confirm('send help please') }},
+//   {keys: 'p', label: 'Play/pause the session'},
+//   {keys: 'n', label: 'Play next track in current radio'}
+// ]
+
 class Autocomplete extends HTMLElement {
   constructor() {
     super()
   }
   connectedCallback() {
+    if (this.getAttribute('modal')) this.enableModal()
     if (this.list) this.enable(this.list)
+  }
+  enableModal() {
+    document.addEventListener('keyup', this.handleShortcut)
+  }
+  handleShortcut(event) {
+    console.log(event)
   }
   enable(list) {
     function suggest(query, populateResults) {
@@ -22,9 +35,9 @@ class Autocomplete extends HTMLElement {
       element: this,
       id: 'my-autocomplete', // To match it to the existing <label>.
       source: suggest,
-      // placeholder: 'Search for a command',
+      placeholder: 'Type a command or search',
       autoselect: true,
-      confirmOnBlur: false, // should be true for touch at least
+      confirmOnBlur: false, // should be true for touch at least?
       showAllValues: true,
       // displayMenu: 'overlay',
       templates: {
