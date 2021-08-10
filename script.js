@@ -11,20 +11,20 @@ const {accessibleAutocomplete, fuzzysort} = window
 // ]
 
 class Autocomplete extends HTMLElement {
-  // constructor() {
-  //   super()
-  // }
-  // connectedCallback() {
-  //   // if (this.getAttribute('modal')) this.enableModal()
-  //   if (this.list) this.activate(this.list)
-  // }
-  // enableModal() {
-  //   document.addEventListener('keyup', this.handleShortcut)
-  // }
-  // handleShortcut(event) {
-  //   console.log(event)
-  // }
-  activate(list) {
+  constructor() {
+    super()
+  }
+  connectedCallback() {
+    // if (this.getAttribute('modal')) this.enableModal()
+    if (this.list) this.enable(this.list)
+  }
+  enableModal() {
+    document.addEventListener('keyup', this.handleShortcut)
+  }
+  handleShortcut(event) {
+    console.log(event)
+  }
+  enable(list) {
     function suggest(query, populateResults) {
       let results = fuzzysort.go(query, list, {key: 'label'})
       results = results.total ? results.map(r => r.obj) : list
@@ -35,7 +35,7 @@ class Autocomplete extends HTMLElement {
       element: this,
       id: 'my-autocomplete', // To match it to the existing <label>.
       source: suggest,
-      // placeholder: 'Type a command or search',
+      placeholder: 'Type a command or search',
       autoselect: true,
       confirmOnBlur: false, // should be true for touch at least?
       showAllValues: true,
