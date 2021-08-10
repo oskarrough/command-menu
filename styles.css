@@ -3,12 +3,36 @@ body,
   font-family: system-ui, segoe ui, sans-serif;
 }
 
+auto-complete[modal] {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  display: flex;
+}
+
+auto-complete[modal] .autocomplete__wrapper {
+/*   border: 1px solid red; */
+  border-radius: 8px;
+/*   padding: 1em; */
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 16px 70px;
+  margin: auto;
+}
+
+/* nice size 640x400px */
+
 .autocomplete__wrapper {
-  max-width: 400px;
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+
 }
 
 .autocomplete__menu {
   max-height: 240px;
+}
+
+.autocomplete__input {
+  border: 0;
 }
 
 .autocomplete__option {
