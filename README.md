@@ -1,8 +1,19 @@
-A command palette for the web. Similar to CTRL+P in code editors as Sublime Text, Atom or VS Code.
+A command palette for the web. Similar to ctrl+k or ctrl+p in code editors.
 
 It uses
 
 - https://github.com/alphagov/accessible-autocomplete for the UI
 - https://github.com/farzher/fuzzysort to extend it with fuzzy searching.
 
-Could also have used https://github.com/algolia/autocomplete.js/.
+Development checklist
+
+- list can be browsed with keyboard up/down and selected with enter
+- (fuzzy) search input to filter the list
+- modal option with global shortcut toggle
+- can call arbitrary actions
+- is a custom element
+
+For later
+
+- groups of actions?
+

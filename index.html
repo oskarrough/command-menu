@@ -16,8 +16,11 @@
   <body>
     
     <p>
-      Press ctrl+k to open the command menu
+      Press ctrl+k to open the command menu or <button onclick="hello()">
+        tap here
+      </button>
     </p>
+    
     
     <p>
       Type a command or search. ↑↓ to browse, ↵ to select, ESC to dismiss.
@@ -73,6 +76,10 @@
       console.log(element)
       element.list = radio4000Commands
       // element.enable()
+      
+      function hello() {
+        element.classList.toggle('is-open')
+      }
     </script>
     
   </body>

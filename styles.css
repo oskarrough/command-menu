@@ -69,6 +69,7 @@ auto-complete[modal] .autocomplete__menu {
   justify-content: space-between;
   padding: 0.5em 0.6em;
   border: 0;
+  border-left: 2px solid transparent;
 }
 
 .autocomplete__option--odd {
@@ -92,6 +93,7 @@ auto-complete[modal] .autocomplete__menu {
 .autocomplete__option--focused,
 .autocomplete__option:hover {
   background-color: hsl(0, 0%, 93%);
+  border-left: 2px solid #00b2c2;
   color: initial;
 }
 

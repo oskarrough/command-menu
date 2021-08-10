@@ -18,12 +18,14 @@ class Autocomplete extends HTMLElement {
     }
   }
   handleShortcut(event) {
+    console.log(event.key)
     if (event.ctrlKey && event.key == "k") {
       event.preventDefault()
-      console.log(this)
+      
       this.classList.toggle('is-open')
       this.querySelector('.autocomplete__input').focus()
     }
+    if (event.key === 'Escape' && this.hasAttribute('modal')) this.classList.remove('is-open')
   }
   enable(list) {
     function suggest(query, populateResults) {
