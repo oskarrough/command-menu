@@ -11,19 +11,11 @@ const {accessibleAutocomplete, fuzzysort} = window
 // ]
 
 class Autocomplete extends HTMLElement {
-  constructor() {
-    super()
-    this.handleShortcut = this.handleShortcut.bind(this)
-  }
   connectedCallback() {
     if (this.list) this.enable(this.list)
-    if (this.getAttribute('modal')) 
-     console.log(this.hasAttribute('modal'))
-      document.addEventListener('keydown', this.handleShortcut)
-    
-  }
-  enableModal() {
-    
+    if (this.hasAttribute('modal')) {
+      document.addEventListener('keydown', this.handleShortcut.bind(this))
+    }
   }
   handleShortcut(event) {
     if (event.ctrlKey && event.key == "k") {
@@ -39,7 +31,6 @@ class Autocomplete extends HTMLElement {
       results = results.total ? results.map(r => r.obj) : list
       populateResults(results)
     }
-    
     accessibleAutocomplete({
       element: this,
       id: 'my-autocomplete', // To match it to the existing <label>.
@@ -60,6 +51,7 @@ class Autocomplete extends HTMLElement {
         }
       },
       onConfirm: (confirmed) => {
+        this.classList.remove('is-open')
         console.log({confirmed})
         if (confirmed) {
           let el = document.querySelector('#my-autocomplete-confirmed')
