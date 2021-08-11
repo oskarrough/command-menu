@@ -35,11 +35,11 @@ html,
   display: none;
 }
 
-.autocomplete__hint,
-.autocomplete__input,
-.autocomplete__option {
-  /* font-size + line-height here */
-}
+/* .autocomplete__hint, */
+/* .autocomplete__input, */
+/* .autocomplete__option { */
+/*   /1* font-size + line-height here *1/ */
+/* } */
 
 .autocomplete__option {
   display: flex;
