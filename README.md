@@ -1,19 +1,15 @@
-A command palette for the web. Similar to ctrl+k or ctrl+p in code editors.
+# Command Menu
 
-It uses
+A command menu, palette for the web. Similar to ctrl+k or ctrl+p in code editors.
+
+It combines
 
 - [alphagov/accessible-autocomplete](https://github.com/alphagov/accessible-autocomplete) for the UI
 - [farzher/fuzzysort](https://github.com/farzher/fuzzysort) to extend it with fuzzy searching.
+		
+and adds a few extra features:
 
-Development checklist
-
-- list can be browsed with keyboard up/down and selected with enter
-- (fuzzy) search input to filter the list
-- modal option with global shortcut toggle
-- can call arbitrary actions
-- is a custom element
-
-For later
-
-- groups of actions?
-
+- fuzzy search
+- optional modal UI with keybindings
+- can call arbitrary commands and functions
+- is a web component/custom element

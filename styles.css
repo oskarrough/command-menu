@@ -7,7 +7,6 @@ html,
 }
 
 .autocomplete__wrapper {
-  position: relative;
   width: 100%;
   max-width: 640px;
 }
@@ -87,11 +86,11 @@ html,
 command-menu[modal] {
   position: absolute;
   z-index: 100;
-  top: 10vh;
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 0 1rem;
+  padding: 10vh 1rem 1rem;
   display: none;
   /*   background: hsla(0, 20%, 50%, 0.1); */
 }
