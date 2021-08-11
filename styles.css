@@ -1,24 +1,6 @@
-body,
-.autocomplete_menu {
+html,
+.auto-complete {
   font-family: system-ui, segoe ui, sans-serif;
-}
-
-auto-complete[modal] {
-  position: absolute;
-  z-index: 100;
-  left: 1rem;
-  right: 1rem;
-  display: none;
-}
-
-auto-complete[modal].is-open {
-  display: flex;
-}
-
-auto-complete[modal] .autocomplete__wrapper {
-  border-radius: 8px;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 16px 70px;
-  margin: auto;
 }
 
 .autocomplete__wrapper {
@@ -30,7 +12,11 @@ auto-complete[modal] .autocomplete__wrapper {
 .autocomplete__menu {
   width: 100%;
   max-height: 400px;
-  border-radius: 8px;
+  border-radius: 0 0 8px 8px;
+}
+
+.autocomplete__input {
+  background: white;
 }
 
 .autocomplete__input,
@@ -45,22 +31,14 @@ auto-complete[modal] .autocomplete__wrapper {
   display: block;
 }
 
-auto-complete[modal] .autocomplete__input {
-  border: 0;
-}
-
-auto-complete[modal] .autocomplete__input--focused {
-  outline: none;
-  border: 0;
-  box-shadow: none;
-}
-
-auto-complete[modal] .autocomplete__menu {
-  border: 0;
-}
-
 .autocomplete__hint {
   display: none;
+}
+
+.autocomplete__hint,
+.autocomplete__input,
+.autocomplete__option {
+  /* font-size + line-height here */
 }
 
 .autocomplete__option {
@@ -101,4 +79,40 @@ auto-complete[modal] .autocomplete__menu {
   right: 1rem;
   top: 50% !important;
   transform: translateY(-50%);
+}
+
+auto-complete[modal] {
+  position: absolute;
+  z-index: 100;
+  top: 10vh;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 1rem;
+  display: none;
+  /*   background: hsla(0, 20%, 50%, 0.1); */
+}
+
+auto-complete[modal].is-open {
+  display: flex;
+}
+
+auto-complete[modal] .autocomplete__wrapper {
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 16px 70px;
+  margin: 0 auto auto;
+}
+
+auto-complete[modal] .autocomplete__input {
+  border: 0;
+}
+
+auto-complete[modal] .autocomplete__input--focused {
+  outline: none;
+  border: 0;
+  box-shadow: none;
+}
+
+auto-complete[modal] .autocomplete__menu {
+  border: 0;
 }

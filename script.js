@@ -15,6 +15,7 @@ class Autocomplete extends HTMLElement {
     this.enable()
     if (this.hasAttribute('modal')) {
       document.addEventListener('keydown', this.handleShortcut.bind(this))
+      document.addEventListener('click', this.handleClick.bind(this))
     }
   }
   handleShortcut(event) {
@@ -24,6 +25,11 @@ class Autocomplete extends HTMLElement {
       this.querySelector('.autocomplete__input').focus()
     }
     if (event.key === 'Escape' && this.hasAttribute('modal')) this.classList.remove('is-open')
+  }
+  handleClick(event) {
+    if (event.target === this) {
+      this.classList.remove('is-open')
+    }
   }
   enable() {
     const list = this.list
