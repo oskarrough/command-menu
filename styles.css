@@ -5,14 +5,14 @@ body,
 
 auto-complete[modal] {
   position: absolute;
+  z-index: 100;
   left: 1rem;
   right: 1rem;
-  display: flex;
   display: none;
 }
 
 auto-complete[modal].is-open {
-  display: block;
+  display: flex;
 }
 
 auto-complete[modal] .autocomplete__wrapper {

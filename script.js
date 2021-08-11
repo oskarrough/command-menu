@@ -12,7 +12,7 @@ const {accessibleAutocomplete, fuzzysort} = window
 
 class Autocomplete extends HTMLElement {
   connectedCallback() {
-    if (this.list) this.enable(this.list)
+    this.enable()
     if (this.hasAttribute('modal')) {
       document.addEventListener('keydown', this.handleShortcut.bind(this))
     }
@@ -20,23 +20,24 @@ class Autocomplete extends HTMLElement {
   handleShortcut(event) {
     if ((event.ctrlKey || event.metaKey) && event.key == "k") {
       event.preventDefault()
-      
       this.classList.toggle('is-open')
       this.querySelector('.autocomplete__input').focus()
     }
     if (event.key === 'Escape' && this.hasAttribute('modal')) this.classList.remove('is-open')
   }
-  enable(list) {
+  enable() {
+    const list = this.list
+    if (!list) throw new Error('Could not start. Missing a list of commands')
+    
     function suggest(query, populateResults) {
       let results = fuzzysort.go(query, list, {key: 'label'})
       results = results.total ? results.map(r => r.obj) : list
       populateResults(results)
     }
-    const selectElement = this.querySelector('select')
+    
     accessibleAutocomplete({
       element: this,
-      id: 'my-autocomplete', // To match it to the existing <label>.
-      selectElement,
+      id: 'my-autocomplete', // To match it to the existing <label>?.
       source: suggest,
       placeholder: 'Type a command or search',
       autoselect: true,

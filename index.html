@@ -17,32 +17,9 @@
     
     <auto-complete modal id="r4"></auto-complete>
     
-    <auto-complete>
-    <select>
-         <option></option>
-        <option value="p">Play/pause the session</option>
-        <option value="n">Play next track in current radio</option>
-        <option value="s">Shuffle current track selection</option>
-        <option value="m">(un)mute the volume</option>
-        <option value="r">Play a random radio channel</option>
-        <option value="f">Cycle through formats (default, fullscreen, minimized)</option>
-        <option value="g h">Go to home</option>
-        <option value="g r">Go to all radios</option>
-        <option value="g m">Go to map</option>
-        <option value="g y">Go to history (y, as in your web-browser)</option>
-        <option value="g i">Go to my radio (i, as in I, me)</option>
-        <option value="g s">Go to my favorite radios (s, as in starred)</option>
-        <option value="g t">Go to my tracks</option>
-        <option value="g a">Go to add</option>
-        <option value="g f">Go to feedback</option>
-        <option value="g c">Go to current radio (the one being played)</option>
-        <option value="g x">Go to the track being played (x, as in a cross to locate the track/trax</option>
-      </select>
-    </auto-complete>
-    
     <p>Press cmd/ctrl+k to open the command menu or <button onclick="hello()">tap here</button></p>
     <p>Type a command or search. ↑↓ to browse, ↵ to select, ESC to dismiss.</p>
-    <p>You selected: <b id="my-autocomplete-confirmed"></b></p>
+    <p style="border: 2px dotted blue">You selected: <b id="my-autocomplete-confirmed"></b></p>
     
     <script>
       const radio4000Commands = [
@@ -69,9 +46,6 @@
       console.log(element)
       element.list = radio4000Commands
       element.enable()
-    </script>
-    
-    <script>
       function hello() {
         element.classList.toggle('is-open')
       }
