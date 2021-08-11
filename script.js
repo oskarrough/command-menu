@@ -27,7 +27,9 @@ class Autocomplete extends HTMLElement {
       this.classList.toggle('is-open')
       this.querySelector('.autocomplete__input').focus()
     }
-    if (event.key === 'Escape' && this.hasAttribute('modal')) this.classList.remove('is-open')
+    if (event.key === 'Escape' && this.hasAttribute('modal')) {
+      this.classList.remove('is-open') 
+    }
   }
   handleClick(event) {
     if (event.target === this) {
@@ -77,4 +79,4 @@ class Autocomplete extends HTMLElement {
   }
 }
 
-customElements.define('auto-complete', Autocomplete)
+customElements.define('command-menu', Autocomplete)
