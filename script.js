@@ -1,5 +1,8 @@
+import accessibleAutocomplete from 'https://cdn.skypack.dev/accessible-autocomplete'
+import fuzzysort from 'https://cdn.skypack.dev/fuzzysort';
+
 // yarn add accessible-autocomplete fuzzysort
-const {accessibleAutocomplete, fuzzysort} = window
+// const {accessibleAutocomplete, fuzzysort} = window
 
 // <label for="my-autocomplete">Choose an action</label>
 // <div id="my-autocomplete-container"></div>
