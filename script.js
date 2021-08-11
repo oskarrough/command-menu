@@ -16,25 +16,33 @@ import fuzzysort from 'https://cdn.skypack.dev/fuzzysort';
 class Autocomplete extends HTMLElement {
   connectedCallback() {
     this.enable()
+
+    // If modal is activated, add keybindings to toggle it.
     if (this.hasAttribute('modal')) {
       document.addEventListener('keydown', this.handleShortcut.bind(this))
-      document.addEventListener('click', this.handleClick.bind(this))
     }
   }
+  // Ctrl+k or Command+k toggles it. Escape closes it, if open.
   handleShortcut(event) {
-    if ((event.ctrlKey || event.metaKey) && event.key == "k") {
-      event.preventDefault()
-      this.classList.toggle('is-open')
-      this.querySelector('.autocomplete__input').focus()
-    }
-    if (event.key === 'Escape' && this.hasAttribute('modal')) {
-      this.classList.remove('is-open') 
-    }
+    if ((event.ctrlKey || event.metaKey) && event.key == "k") this.toggle()
+    if (event.key === 'Escape' && this.hasAttribute('modal')) this.close()
   }
   handleClick(event) {
     if (event.target === this) {
-      this.classList.remove('is-open')
+      this.close()
     }
+  }
+  open() {
+    this.classList.add('is-open')
+    this.querySelector('.autocomplete__input').focus()
+    document.addEventListener('click', this.handleClick.bind(this))
+  }
+  close() {
+    this.classList.remove('is-open')
+    document.removeEventListener('click', this.handleClick.bind(this))
+  }
+  toggle() {
+    this.classList.contains('is-open') ? this.close() : this.open()
   }
   enable() {
     const list = this.list
