@@ -2,8 +2,8 @@ A command palette for the web. Similar to ctrl+k or ctrl+p in code editors.
 
 It uses
 
-- https://github.com/alphagov/accessible-autocomplete for the UI
-- https://github.com/farzher/fuzzysort to extend it with fuzzy searching.
+- [alphagov/accessible-autocomplete](https://github.com/alphagov/accessible-autocomplete) for the UI
+- [farzher/fuzzysort](https://github.com/farzher/fuzzysort) to extend it with fuzzy searching.
 
 Development checklist
 

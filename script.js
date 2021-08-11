@@ -18,8 +18,7 @@ class Autocomplete extends HTMLElement {
     }
   }
   handleShortcut(event) {
-    console.log(event.key)
-    if (event.ctrlKey && event.key == "k") {
+    if ((event.ctrlKey || event.metaKey) && event.key == "k") {
       event.preventDefault()
       
       this.classList.toggle('is-open')
@@ -33,9 +32,11 @@ class Autocomplete extends HTMLElement {
       results = results.total ? results.map(r => r.obj) : list
       populateResults(results)
     }
+    const selectElement = this.querySelector('select')
     accessibleAutocomplete({
       element: this,
       id: 'my-autocomplete', // To match it to the existing <label>.
+      selectElement,
       source: suggest,
       placeholder: 'Type a command or search',
       autoselect: true,
