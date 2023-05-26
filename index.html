@@ -9,7 +9,7 @@
   </head>
   <body>
     
-    <command-menu modal id="r4"></command-menu>
+    <command-menu modal></command-menu>
     
     <h1>&lt;command-menu&gt;</h1>
     <p>Command/Ctrl+k to open, ↑↓ to browse, ↵ to select, ESC to dismiss. Or... <button onclick="demoButton()">Tap here</button></p>
@@ -36,8 +36,10 @@
         {keys: 'g c', label: 'Go to current radio (the one being played)'},
         {keys: 'g x', label: 'Go to the track being played (x, as in a cross to locate the track/trax)'}
       ]
-      var element = document.querySelector('command-menu#r4')
+
+      var element = document.querySelector('command-menu')
       element.list = radio4000Commands
+
       function demoButton() {
         element.open()
       }
