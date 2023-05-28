@@ -13,22 +13,44 @@ import fuzzysort from 'https://cdn.skypack.dev/fuzzysort'
 class CommandMenu extends LitElement {
   static get properties() {
     return {
+      // REQUIRED: Set this property as an array of Commands to make it work.
+      commands: { type: 'Array' },
+      // Render as a modal dialog.
       modal: { type: 'Boolean', reflect: true },
-      list: { type: 'Array' },
-      commands: { type: 'Array', state: true },
+      // Adding a search will enable fuzzy search for the commands
       search: { type: 'String' },
+      // Internal state
+      list: { type: 'Array', state: true },
     }
   }
 
   static styles = css`
     :host {
+      --bg1: hsl(0deg 23% 95%);
+      --bg2: hsl(0deg 23% 97%);
+      --bg3: hsl(0deg 23% 99%);
+
       display: flex;
       flex-flow: column nowrap;
-      /* gap: 0.5em; */
       border: 2px solid yellowgreen;
-      background: hsl(0deg 23% 95%);
-      border-radius: 0.5em;
+      background: var(--bg1);
+      border-radius: 0.3em;
+    }
+    :host([modal]) {
+      position: absolute;
+      z-index: 100;
+      top: 10vh;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: 0 auto auto;
+      max-width: 640px;
+      max-height: 400px;
+      overflow: auto;
       box-shadow: rgba(0, 0, 0, 0.5) 0px 1em 4em;
+    }
+    :host([hidden]) {
+      display: none;
     }
     command-menu-input {
       position: sticky;
@@ -41,17 +63,17 @@ class CommandMenu extends LitElement {
       font-size: 1em;
       border: 0;
       border-bottom: 1px solid hsla(0deg 0% 0% / 20%);
-      background: none;
+      background: var(--bg2);
     }
     input[type=search]:focus {
       outline: none;
+      background: var(--bg3);
     }
     command-menu-list {
       display: flex;
       flex-flow: column;
-      margin: 0.5em;
-    }
-    command-menu-list {
+      box-sizing: border-box;
+      padding: 0.5em;
       width: 100%;
     }
     command-menu-item {
@@ -59,8 +81,8 @@ class CommandMenu extends LitElement {
       flex-flow: row wrap;
       justify-content: flex-start;
       gap: 0.4em;
-      padding: 0.75em 0.6em;
-      user-select: none;
+      padding: 0.6em 0.6em;
+      
     }
     command-menu-item:focus,
     command-menu-input:has(:focus-within) + command-menu-list > command-menu-item:first-child {
@@ -92,7 +114,7 @@ class CommandMenu extends LitElement {
 
   connectedCallback() {
     super.connectedCallback()
-    
+
     if (this.hasAttribute('modal')) {
       this.addEventListener('keydown', (event) => {
         if ((event.ctrlKey || event.metaKey) && event.key == "k") {
@@ -108,7 +130,6 @@ class CommandMenu extends LitElement {
   }
 
   render() {
-    // if (!this.list) return null
     return html`
       <command-menu-input>
         <label>
@@ -119,7 +140,7 @@ class CommandMenu extends LitElement {
             @keydown=${this.onKeyboardSearch} />
         </label>
       </command-menu-input>
-      <command-menu-list role="menu" @keydown=${this.onKeyboardPress}>
+      <command-menu-list role="menu" @click=${this.onClick} @keydown=${this.onKeyboardPress}>
         ${this.commands.map(item => html`
           <command-menu-item role="menuitem" .item=${item}></command-menu-item>
         `)}
@@ -127,18 +148,19 @@ class CommandMenu extends LitElement {
     `
   }
 
-  get commands() {
+  get list() {
     if (this.search) {
-      const results = fuzzysort.go(this.search, this.list, { keys: ['title'] })
+      const results = fuzzysort.go(this.search, this.commands, { keys: ['title'] })
       return results.map(result => result.obj)
     }
-    return this.list
-
+    return this.commands
   }
 
   onKeyboardSearch(event) {
     if (event.key === 'ArrowDown') {
       event.preventDefault()
+      // Two times to skip the first command, which is pre-selected.
+      this.moveNext()
       this.moveNext()
     }
     if (event.key === 'Enter') {
@@ -146,6 +168,10 @@ class CommandMenu extends LitElement {
       // Select first item from results
       this.selectCommand(this.commands[0])
     }
+  }
+
+  onClick(event) {
+    this.selectCommand(event.target.item)
   }
 
   // Ctrl+k or Command+k toggles it. Escape closes it, if open.
@@ -214,14 +240,11 @@ class CommandMenu extends LitElement {
   selectCommand(command) {
     if (!command) command = this.shadowRoot.activeElement.item
     console.log('selected command', command)
-    // if (selected?.action) selected.action()
-    // this.close()
-  }
-
-  onClick(event) {
-    if (event.target === this) {
-      this.close()
+    if (command.children) {
+      this.moveIn()
     }
+    // if (selected?.action) selected.action()
+    if (this.hasAttribute('modal')) this.close()
   }
 
   open() {
@@ -262,7 +285,7 @@ class CommandMenuItem extends LitElement {
     <command-menu-item-subtitle>${subtitle}</command-menu-item-subtitle>
     ${shortcut ? html`<kbd>${shortcut}</kbd>` : null}
     
-    ${this.item.children ? '...' : ''}
+    ${this.item.children ? html`&rarr;` : ''}
       ${this.item.children?.length ? html`
           <command-menu-list role="menu" hidden>
             ${this.item.children.map(item => html`

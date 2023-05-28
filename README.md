@@ -4,11 +4,11 @@ A command menu, palette for the web. Similar to ctrl+k or ctrl+p in code editors
 
 ## Features
 
-- accessible UI with [alphagov/accessible-autocomplete](https://github.com/alphagov/accessible-autocomplete)
+- is a web component
+- accessible UI (hopefully)
 - fuzzy search using [farzher/fuzzysort](https://github.com/farzher/fuzzysort)
 - optional modal UI with keybindings
 - can call arbitrary commands and functions
-- is a web component/custom element
 
 ## How to use
 
@@ -21,9 +21,9 @@ Since it's not on npm yet you'll have to copy the files for now. Also see index.
 
 ```js
 const commands = [
-  {keys: '', label: 'Help', command: () => { confirm('Send help please') }},
-  {keys: 'p', label: 'Play track'},
-  {keys: 'n', label: 'Stop track'}
+  {title: 'Help', action: () => { confirm('Send help please') }},
+  {title: 'Play track', keys: 'p', },
+  {title: 'Stop track', keys: 'n'}
 ]
 document.querySelector('command-menu').list = commands
 ```

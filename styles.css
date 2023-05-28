@@ -2,22 +2,3 @@ html {
   font-family: system-ui, segoe ui, sans-serif;
 }
 
-command-menu {
-}
-
-command-menu[modal] {
-  position: absolute;
-  z-index: 100;
-  top: 10vh;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 0 auto auto;
-  max-width: 640px;
-  max-height: 400px;
-  overflow: auto;
-}
-
-command-menu[hidden] {
-  display: none;
-}

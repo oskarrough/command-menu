@@ -12,10 +12,14 @@
 <body>
 
   <h1>&lt;command-menu&gt;</h1>
-  <p>Command/Ctrl+k to open, ↑↓ to browse, ↵ to select, ESC to dismiss. Or... <button onclick="demoButton()">Tap
-      here</button></p>
 
+  <p>This is how it works out of the box.</p>
   <command-menu></command-menu>
+
+  <br><br>
+  <p>Make it modal by setting the <code>modal</code> attribute.<br>
+    Command/Ctrl+k to open, ↑↓ to browse, ↵ to select, ESC to dismiss. Or... <button onclick="demoButton()">Tap
+      here</button></p>
 
   <command-menu modal hidden></command-menu>
   <!-- <p style="margin-top: 2em; border: 2px dotted blue">You selected: <b id="my-autocomplete-confirmed"></b></p> -->
@@ -70,8 +74,8 @@
     ]
 
     var menus = Array.from(document.querySelectorAll('command-menu'))
-    menus[0].list = testCommands
-    menus[1].list = r4Commands
+    menus[0].commands = testCommands
+    menus[1].commands = r4Commands
 
     function demoButton() {
       menus[1].open()
