@@ -14,49 +14,67 @@
   <h1>&lt;command-menu&gt;</h1>
   <p>Command/Ctrl+k to open, ↑↓ to browse, ↵ to select, ESC to dismiss. Or... <button onclick="demoButton()">Tap
       here</button></p>
-  <p style="margin-top: 2em; border: 2px dotted blue">You selected: <b id="my-autocomplete-confirmed"></b></p>
 
   <command-menu></command-menu>
 
+  <command-menu modal hidden></command-menu>
+  <!-- <p style="margin-top: 2em; border: 2px dotted blue">You selected: <b id="my-autocomplete-confirmed"></b></p> -->
+
   <script>
-    const radio4000Commands = [
-      { title: 'Channels', subtitle: 'all about dem radios', children: [{ title: 'Read' }] },
+    const testCommands = [
+      {
+        title: 'Channels', subtitle: 'all about dem radios', children: [
+          { title: 'Explore', subtitle: 'Check all radios' },
+          { title: 'Search' },
+          {
+            title: 'Channel map', subtitle: 'a cool map', children: [
+              { title: 'Map 1' },
+              { title: 'Map 2' },
+            ]
+          }
+        ]
+      },
       {
         title: 'Tracks', children: [
-          { title: 'Read' },
-          { title: 'Create' },
-          { title: 'Update' },
-          { title: 'Delete' }
+          { title: 'Read track' },
+          { title: 'Create track' },
+          { title: 'Update track' },
+          { title: 'Delete track' }
         ]
+      },
+      {
+        title: 'About',
+        subtitle: 'Really, what is this?'
       }
-      /*
-        {shortcut: '', title: 'Help', command: () => { confirm('send help plx') }},
-        {shortcut: 'p', title: 'Play/pause the session'},
-        {shortcut: 'n', title: 'Play next track in current radio'},
-        {shortcut: 's', title: 'Shuffle current track selection'},
-        {shortcut: 'm', title: '(un)mute the volume'},
-        {shortcut: 'r', title: 'Play a random radio channel'},
-        {shortcut: 'f', title: 'Cycle through formats (default, fullscreen, minimized)'},
-        {shortcut: 'g h', title: 'Go to home'},
-        {shortcut: 'g r', title: 'Go to all radios'},
-        {shortcut: 'g m', title: 'Go to map'},
-        {shortcut: 'g y', title: 'Go to history (y, as in your web-browser)'},
-        {shortcut: 'g i', title: 'Go to my radio (i, as in I, me)'},
-        {shortcut: 'g s', title: 'Go to my favorite radios (s, as in starred)'},
-        {shortcut: 'g t', title: 'Go to my tracks'},
-        {shortcut: 'g a', title: 'Go to add'},
-        {shortcut: 'g f', title: 'Go to feedback'},
-        {shortcut: 'g c', title: 'Go to current radio (the one being played)'},
-        {shortcut: 'g x', title: 'Go to the track being played (x, as in a cross to locate the track/trax)'}
-        */
-
     ]
 
-    var element = document.querySelector('command-menu')
-    element.list = radio4000Commands
+    const r4Commands = [
+      { shortcut: '', title: 'Help', command: () => { confirm('send help plx') } },
+      { shortcut: 'p', title: 'Play/pause the session' },
+      { shortcut: 'n', title: 'Play next track in current radio' },
+      { shortcut: 's', title: 'Shuffle current track selection' },
+      { shortcut: 'm', title: '(un)mute the volume' },
+      { shortcut: 'r', title: 'Play a random radio channel' },
+      { shortcut: 'f', title: 'Cycle through formats (default, fullscreen, minimized)' },
+      { shortcut: 'g h', title: 'Go to home' },
+      { shortcut: 'g r', title: 'Go to all radios' },
+      { shortcut: 'g m', title: 'Go to map' },
+      { shortcut: 'g y', title: 'Go to history (y, as in your web-browser)' },
+      { shortcut: 'g i', title: 'Go to my radio (i, as in I, me)' },
+      { shortcut: 'g s', title: 'Go to my favorite radios (s, as in starred)' },
+      { shortcut: 'g t', title: 'Go to my tracks' },
+      { shortcut: 'g a', title: 'Go to add' },
+      { shortcut: 'g f', title: 'Go to feedback' },
+      { shortcut: 'g c', title: 'Go to current radio (the one being played)' },
+      { shortcut: 'g x', title: 'Go to the track being played (x, as in a cross to locate the track/trax)' }
+    ]
+
+    var menus = Array.from(document.querySelectorAll('command-menu'))
+    menus[0].list = testCommands
+    menus[1].list = r4Commands
 
     function demoButton() {
-      element.open()
+      menus[1].open()
     }
   </script>
 

@@ -29,3 +29,9 @@ document.querySelector('command-menu').list = commands
 ```
 
 > Note: we don't handle keybindindings for the commands. You'll have to do that yourself. For now.
+
+## References
+
+- https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
+- https://www.w3.org/WAI/tutorials/menus/application-menus/#keyboard-behavior
+- https://github.com/Heydon/inclusive-menu-button/blob/master/inclusive-menu-button.js
