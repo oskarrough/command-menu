@@ -17,6 +17,8 @@ class CommandMenu extends LitElement {
       commands: { type: 'Array' },
       // Render as a modal dialog.
       modal: { type: 'Boolean', reflect: true },
+      // Whether to show the list of commands before the user interacts.
+      showList: { type: 'Boolean' },
       // Adding a search will enable fuzzy search for the commands
       search: { type: 'String' },
       // Internal state
@@ -116,36 +118,20 @@ class CommandMenu extends LitElement {
     super.connectedCallback()
 
     if (this.hasAttribute('modal')) {
-      this.addEventListener('keydown', (event) => {
+      document.addEventListener('keydown', (event) => {
         if ((event.ctrlKey || event.metaKey) && event.key == "k") {
           event.preventDefault()
           this.toggle()
         }
-        if (event.key === 'Escape') {
-          event.preventDefault()
-          this.close()
-        }
       })
     }
-  }
 
-  render() {
-    return html`
-      <command-menu-input>
-        <label>
-          <input
-            type="search"
-            placeholder="Search for commands"
-            @input=${(e) => this.search = e.target.value}
-            @keydown=${this.onKeyboardSearch} />
-        </label>
-      </command-menu-input>
-      <command-menu-list role="menu" @click=${this.onClick} @keydown=${this.onKeyboardPress}>
-        ${this.commands.map(item => html`
-          <command-menu-item role="menuitem" .item=${item}></command-menu-item>
-        `)}
-      </command-menu-list>
-    `
+    this.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        this.close()
+      }
+    })
   }
 
   get list() {
@@ -157,11 +143,18 @@ class CommandMenu extends LitElement {
   }
 
   onKeyboardSearch(event) {
+    this.shadowRoot.querySelector('command-menu-list').hidden = false
     if (event.key === 'ArrowDown') {
       event.preventDefault()
       // Two times to skip the first command, which is pre-selected.
       this.moveNext()
       this.moveNext()
+    }
+    // not sure if we want this behavior
+    if (event.key === 'ArrowRight') {
+      event.preventDefault()
+      this.moveNext()
+      this.moveIn()
     }
     if (event.key === 'Enter') {
       event.preventDefault()
@@ -253,7 +246,8 @@ class CommandMenu extends LitElement {
   }
 
   close() {
-    this.setAttribute('hidden', true)
+    if (this.hasAttribute('modal')) this.setAttribute('hidden', true)
+    this.showList = false
   }
 
   toggle() {
@@ -262,6 +256,27 @@ class CommandMenu extends LitElement {
     } else {
       this.close()
     }
+  }
+
+  render() {
+    return html`
+      <command-menu-input>
+        <label>
+          <input
+            type="search"
+            placeholder="Search for commands"
+            @input=${(e) => this.search = e.target.value}
+            @focus=${() => this.showList = true}
+            @click=${() => this.showList = true}
+            @keydown=${this.onKeyboardSearch} />
+        </label>
+      </command-menu-input>
+      <command-menu-list role="menu" ?hidden=${!this.showList} @click=${this.onClick} @keydown=${this.onKeyboardPress}>
+        ${this.list.map(item => html`
+          <command-menu-item role="menuitem" .item=${item}></command-menu-item>
+        `)}
+      </command-menu-list>
+    `
   }
 }
 
@@ -281,8 +296,10 @@ class CommandMenuItem extends LitElement {
   render() {
     const { title, subtitle, shortcut } = this.item
     return html`
+    
     <command-menu-item-title>${title}</command-menu-item-title>
     <command-menu-item-subtitle>${subtitle}</command-menu-item-subtitle>
+    
     ${shortcut ? html`<kbd>${shortcut}</kbd>` : null}
     
     ${this.item.children ? html`&rarr;` : ''}

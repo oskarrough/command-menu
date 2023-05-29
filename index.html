@@ -1,8 +1,7 @@
 <!doctype html>
 <html>
-
 <head>
-  <title>Autocomplete adventures</title>
+  <title>A &lt;command-menu&gt; and further autocomplete adventures</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/styles.css">
@@ -15,14 +14,21 @@
 
   <p>This is how it works out of the box.</p>
   <command-menu></command-menu>
+  
 
   <br><br>
-  <p>Make it modal by setting the <code>modal</code> attribute.<br>
-    Command/Ctrl+k to open, ↑↓ to browse, ↵ to select, ESC to dismiss. Or... <button onclick="demoButton()">Tap
-      here</button></p>
+  <ul>
+    <li>Interacting (focusing, clicking, typing) will show the commands.</li>
+    <li>The listof commands can be navigated with focus</li>
+    <li>As well as ↑↓ to move focus</li>
+    <li>←→ to view sub commands, if available</li>
+    <li>Pressing enter will select the command</li>
+    <li>Make it modal by setting the <code>modal</code> attribute</li>
+    <li>If modal, Command/Ctrl+k to open, ESC to dismiss</li>
+  </ul>
+  <p>Or... <button onclick="demoButton()">Open modal command menu</button></p>
 
   <command-menu modal hidden></command-menu>
-  <!-- <p style="margin-top: 2em; border: 2px dotted blue">You selected: <b id="my-autocomplete-confirmed"></b></p> -->
 
   <script>
     const testCommands = [
@@ -83,5 +89,4 @@
   </script>
 
 </body>
-
 </html>
