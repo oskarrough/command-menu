@@ -194,18 +194,18 @@ class CommandMenu extends LitElement {
 
   moveIn() {
     const focused = this.shadowRoot.activeElement
-    const nestedList = focused.querySelector('command-menu-list')
-    if (nestedList) {
-      nestedList.hidden = false
-      const firstChild = nestedList.querySelector('command-menu-item')
-      this.move(firstChild)
+    const childList = focused.querySelector('command-menu-list')
+    if (childList) {
+      childList.hidden = false
+      const x = childList.querySelector('command-menu-item')
+      this.move(x)
     }
   }
 
   // arrow left
   moveOut() {
     const focused = this.shadowRoot.activeElement
-    const parent = focused.parentElement
+    const parent = focused.closest('command-menu-list')
     const isChild = parent.closest('command-menu-item')
     if (parent && isChild) {
       parent.hidden = true
@@ -216,11 +216,13 @@ class CommandMenu extends LitElement {
   movePrevious() {
     const focused = this.shadowRoot.activeElement
     let previous = focused.previousElementSibling
+    // Go one level up.
     if (!previous) {
       const parent = focused.parentElement
       parent.hidden = true
       previous = parent.closest('command-menu-item')
     }
+    // If no more levels, focus search.
     if (!previous) {
       previous = this.shadowRoot.querySelector('input[type=search]')
     }
