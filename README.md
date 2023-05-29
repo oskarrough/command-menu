@@ -35,3 +35,6 @@ document.querySelector('command-menu').list = commands
 - https://developer.mozilla.org/en-US/docs/Web/Accessibility/Keyboard-navigable_JavaScript_widgets
 - https://www.w3.org/WAI/tutorials/menus/application-menus/#keyboard-behavior
 - https://github.com/Heydon/inclusive-menu-button/blob/master/inclusive-menu-button.js
+- https://headlessui.com/react/combobox#combobox
+- https://developers.raycast.com/basics/prepare-an-extension-for-store#ui-ux-guidelines
+- https://github.com/pacocoursey/cmdk

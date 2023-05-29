@@ -190,8 +190,6 @@ class CommandMenu extends LitElement {
 
   move(element) {
     element?.focus()
-    // element.setAttribute('aria-selected', 'true')
-    console.log('moved', element)
   }
 
   moveIn() {
@@ -204,6 +202,7 @@ class CommandMenu extends LitElement {
     }
   }
 
+  // arrow left
   moveOut() {
     const focused = this.shadowRoot.activeElement
     const parent = focused.parentElement
@@ -217,7 +216,14 @@ class CommandMenu extends LitElement {
   movePrevious() {
     const focused = this.shadowRoot.activeElement
     let previous = focused.previousElementSibling
-    if (!previous) previous = this.shadowRoot.querySelector('input[type=search]')
+    if (!previous) {
+      const parent = focused.parentElement
+      parent.hidden = true
+      previous = parent.closest('command-menu-item')
+    }
+    if (!previous) {
+      previous = this.shadowRoot.querySelector('input[type=search]')
+    }
     this.move(previous)
   }
 
