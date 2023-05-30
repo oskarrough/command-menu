@@ -22,7 +22,7 @@ class CommandMenu extends LitElement {
 			// Adding a search will enable fuzzy search for the commands
 			search: {type: 'String'},
 			// Internal state
-			list: {type: 'Array', state: true},
+			filteredCommands: {type: 'Array', state: true},
 		}
 	}
 
@@ -137,7 +137,7 @@ class CommandMenu extends LitElement {
 		})
 	}
 
-	get list() {
+	get filteredCommands() {
 		if (this.search) {
 			const results = fuzzysort.go(this.search, this.commands, {keys: ['title']})
 			return results.map((result) => result.obj)
@@ -149,7 +149,6 @@ class CommandMenu extends LitElement {
 		this.onEnter(event.target.item)
 	}
 
-	// Ctrl+k or Command+k toggles it. Escape closes it, if open.
 	onListKeydown(event) {
 		console.log('keydown', event.key)
 		if (typeof this['on' + event.key] === 'function') {
@@ -174,53 +173,6 @@ class CommandMenu extends LitElement {
 
 	move(element) {
 		element?.focus()
-	}
-
-	onArrowRight() {
-		const focused = this.shadowRoot.activeElement
-		const childList = focused.querySelector('command-menu-list')
-		if (childList) {
-			childList.hidden = false
-			const x = childList.querySelector('command-menu-item')
-			this.move(x)
-		}
-	}
-
-	onArrowLeft() {
-		const focused = this.shadowRoot.activeElement
-		const parent = focused.closest('command-menu-list')
-		const isChild = parent.closest('command-menu-item')
-		if (parent && isChild) {
-			parent.hidden = true
-			this.move(parent.parentElement)
-		} else {
-			this.move(this.shadowRoot.querySelector('input[type=search]'))
-		}
-	}
-
-	onArrowUp() {
-		const focused = this.shadowRoot.activeElement
-		let previous = focused.previousElementSibling
-		// Go one level up.
-		if (!previous) {
-			const parent = focused.parentElement
-			parent.hidden = true
-			previous = parent.closest('command-menu-item')
-		}
-		// If no more levels, focus search.
-		if (!previous) {
-			previous = this.shadowRoot.querySelector('input[type=search]')
-		}
-		this.move(previous)
-	}
-
-	onArrowDown() {
-		const focused = this.shadowRoot.activeElement
-		let next = focused.nextElementSibling
-		if (!next && focused.type === 'search') {
-			next = this.shadowRoot.querySelector('command-menu-item')
-		}
-		this.move(next)
 	}
 
 	onEnter(command) {
@@ -248,6 +200,50 @@ class CommandMenu extends LitElement {
 		this.hasAttribute('hidden') ? this.open() : this.close()
 	}
 
+	onArrowRight() {
+		const focused = this.shadowRoot.activeElement
+		const children = focused.querySelector('command-menu-list')
+		if (children) {
+			children.hidden = false
+			this.move(children.querySelector('command-menu-item'))
+		}
+	}
+
+	onArrowLeft() {
+		const focused = this.shadowRoot.activeElement
+		const parent = focused.closest('command-menu-list')
+		const isChild = parent.closest('command-menu-item')
+		if (parent && isChild) {
+			parent.hidden = true
+			this.move(parent.parentElement)
+		} else {
+			this.move(this.shadowRoot.querySelector('input[type=search]'))
+		}
+	}
+
+	onArrowUp() {
+		const focused = this.shadowRoot.activeElement
+		let previous = focused.previousElementSibling
+		if (!previous) {
+			const parent = focused.closest('command-menu-list')
+			parent.hidden = true
+			previous = parent.closest('command-menu-item')
+		}
+		if (!previous) {
+			previous = this.shadowRoot.querySelector('input[type=search]')
+		}
+		this.move(previous)
+	}
+
+	onArrowDown() {
+		const focused = this.shadowRoot.activeElement
+		let next = focused.nextElementSibling
+		if (!next && focused.type === 'search') {
+			next = this.shadowRoot.querySelector('command-menu-item')
+		}
+		this.move(next)
+	}
+
 	render() {
 		return html`
 			<command-menu-input>
@@ -265,48 +261,27 @@ class CommandMenu extends LitElement {
 				</label>
 			</command-menu-input>
 			<command-menu-list role="menu" ?hidden=${!this.showList} @click=${this.onClick} @keydown=${this.onListKeydown}>
-				${this.list.map((item) => html` <command-menu-item role="menuitem" .item=${item}></command-menu-item> `)}
+				${this.filteredCommands.map((item) => this.renderCommandMenuItem(item))}
 			</command-menu-list>
 		`
 	}
-}
 
-class CommandMenuItem extends LitElement {
-	static get properties() {
-		return {
-			item: {type: 'Object'},
-		}
-	}
-
-	connectedCallback() {
-		super.connectedCallback()
-		// Make it focusable
-		if (!this.hasAttribute('tabindex')) this.tabIndex = 0
-	}
-
-	render() {
-		const {title, subtitle, shortcut} = this.item
+	renderCommandMenuItem({title, subtitle, shortcut, children}) {
 		return html`
-			<command-menu-item-title>${title}</command-menu-item-title>
-			<command-menu-item-subtitle>${subtitle}</command-menu-item-subtitle>
-
-			${shortcut ? html`<kbd>${shortcut}</kbd>` : null} ${this.item.children ? html`&rarr;` : ''}
-			${this.item.children?.length
-				? html`
-						<command-menu-list role="menu" hidden>
-							${this.item.children.map(
-								(item) => html` <command-menu-item role="menuitem" .item=${item}></command-menu-item> `
-							)}
-						</command-menu-list>
-				  `
-				: null}
+			<command-menu-item role="menuitem" tabIndex="0">
+				<command-menu-item-title>${title}</command-menu-item-title>
+				<command-menu-item-subtitle>${subtitle}</command-menu-item-subtitle>
+				${shortcut ? html`<kbd>${shortcut}</kbd>` : null} ${children ? html`&rarr;` : ''}
+				${children?.length
+					? html`
+							<command-menu-list role="menu" hidden>
+								${children.map((x) => this.renderCommandMenuItem(x))}
+							</command-menu-list>
+					  `
+					: null}
+			</command-menu-item>
 		`
-	}
-
-	createRenderRoot() {
-		return this
 	}
 }
 
 customElements.define('command-menu', CommandMenu)
-customElements.define('command-menu-item', CommandMenuItem)
