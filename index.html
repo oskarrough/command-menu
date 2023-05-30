@@ -1,47 +1,129 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Autocomplete adventures</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/styles.css">
-    <script src="script.js" type="module" async></script>
-  </head>
-  <body>
-    
-    <command-menu modal id="r4"></command-menu>
-    
-    <h1>&lt;command-menu&gt;</h1>
-    <p>Command/Ctrl+k to open, ↑↓ to browse, ↵ to select, ESC to dismiss. Or... <button onclick="demoButton()">Tap here</button></p>
-    <p style="margin-top: 2em; border: 2px dotted blue">You selected: <b id="my-autocomplete-confirmed"></b></p>
-    
-    <script>
-      const radio4000Commands = [
-        {keys: '', label: 'Help', command: () => { confirm('send help plx') }},
-        {keys: 'p', label: 'Play/pause the session'},
-        {keys: 'n', label: 'Play next track in current radio'},
-        {keys: 's', label: 'Shuffle current track selection'},
-        {keys: 'm', label: '(un)mute the volume'},
-        {keys: 'r', label: 'Play a random radio channel'},
-        {keys: 'f', label: 'Cycle through formats (default, fullscreen, minimized)'},
-        {keys: 'g h', label: 'Go to home'},
-        {keys: 'g r', label: 'Go to all radios'},
-        {keys: 'g m', label: 'Go to map'},
-        {keys: 'g y', label: 'Go to history (y, as in your web-browser)'},
-        {keys: 'g i', label: 'Go to my radio (i, as in I, me)'},
-        {keys: 'g s', label: 'Go to my favorite radios (s, as in starred)'},
-        {keys: 'g t', label: 'Go to my tracks'},
-        {keys: 'g a', label: 'Go to add'},
-        {keys: 'g f', label: 'Go to feedback'},
-        {keys: 'g c', label: 'Go to current radio (the one being played)'},
-        {keys: 'g x', label: 'Go to the track being played (x, as in a cross to locate the track/trax)'}
-      ]
-      var element = document.querySelector('command-menu#r4')
-      element.list = radio4000Commands
-      function demoButton() {
-        element.open()
-      }
-    </script>
-    
-  </body>
+	<head>
+		<title>A &lt;command-menu&gt; and further autocomplete adventures</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+		<link rel="stylesheet" href="/styles.css" />
+		<script src="command-menu.js" type="module" async></script>
+	</head>
+	<body>
+		<h1>&lt;command-menu&gt;</h1>
+
+		<p>This is how it works out of the box.</p>
+		<command-menu></command-menu>
+
+		<command-menu modal></command-menu>
+
+		<h2>Features</h2>
+		<ul>
+			<li>Items can be navigated with focus</li>
+			<li>As well as ↑↓ to move up and down</li>
+			<li>←→ to move in and out</li>
+			<li>Interacting (focusing, clicking, typing) will show the commands</li>
+			<li>Pressing enter will trigger any <code>action()</code> property on the command</li>
+			<li>Fuzzy search</li>
+			<li>Make it modal by setting the <code>modal</code> attribute</li>
+			<li>If modal, Command/Ctrl+k to open, ESC to dismiss</li>
+			<li>Flexible structure for building nested commands</li>
+		</ul>
+		<p>Or... <button onclick="document.querySelector('command-menu[modal]').open()">Open modal command menu</button></p>
+
+		<h3>But still, why?</h3>
+		<ul>
+			<li>Works anywhere as a web component <small>(most command menus/palettes are written with and for frameworks)</small></li>
+			<li>Only one dependency (the fuzzy search library)</li>
+			<li>Easier to style than a select and possibly even better UX</li>
+		</ul>
+
+		<h3>Want or to-do list</h3>
+		<ul>
+			<li>Close on click outside? Maybe not</li>
+			<li>Always keep the search input focused while browsing?</li>
+			<li>Better accessibility, review aria roles</li>
+		</ul>
+
+		<h2>How to</h2>
+		<ul>
+			<li>Load the script</li>
+			<li>Create a command-menu HTML element</li>
+			<li>Using javascript, target the element and set the `commands` property to an array of commands</li>
+		</ul>
+
+		<script>
+			const testCommands = [
+				{title: 'R4', subtitle: 'Homepage'},
+				{title: 'Sign in', subtitle: 'Welcome back'},
+				{title: 'Sign up', subtitle: 'Create a new radio channel'},
+				{
+					title: 'Channels',
+					subtitle: 'all about dem radios',
+					children: [
+						{title: 'Explore'},
+						{title: 'Search'},
+						{title: 'Channel map', subtitle: 'a cool map', children: [{title: 'Map 1'}, {title: 'Map 2'}]},
+					],
+				},
+				{
+					title: 'Tracks',
+					children: [{title: 'Read track'}, {title: 'Create track'}, {title: 'Update track'}, {title: 'Delete track'}],
+				},
+				{
+					title: 'About',
+					subtitle: 'Really, what is this?',
+					children: [{title: 'It is about commands'}, {title: 'And menus'}],
+				},
+				{
+					title: 'Typography',
+					subtitle: 'Change the font style.',
+					children: [
+						{
+							title: 'Bold',
+							subtitle: 'Make the selection bold.',
+						},
+						{
+							title: 'Italic',
+							subtitle: 'Make the selection italic.',
+						},
+						{
+							title: 'Underline',
+							subtitle: 'Make the selection underlined.',
+						},
+					],
+				},
+			]
+
+			const r4Commands = [
+				{
+					shortcut: '',
+					title: 'Help',
+					action: () => {
+						confirm('send help plx')
+					},
+				},
+				{shortcut: 'p', title: 'Play/pause the session'},
+				{shortcut: 'n', title: 'Play next track in current radio'},
+				{shortcut: 's', title: 'Shuffle current track selection'},
+				{shortcut: 'm', title: '(un)mute the volume'},
+				{shortcut: 'r', title: 'Play a random radio channel'},
+				{shortcut: 'f', title: 'Cycle through formats (default, fullscreen, minimized)'},
+				{shortcut: 'g h', title: 'Go to home'},
+				{shortcut: 'g r', title: 'Go to all radios'},
+				{shortcut: 'g m', title: 'Go to map'},
+				{shortcut: 'g y', title: 'Go to history (y, as in your web-browser)'},
+				{shortcut: 'g i', title: 'Go to my radio (i, as in I, me)'},
+				{shortcut: 'g s', title: 'Go to my favorite radios (s, as in starred)'},
+				{shortcut: 'g t', title: 'Go to my tracks'},
+				{shortcut: 'g a', title: 'Go to add'},
+				{shortcut: 'g f', title: 'Go to feedback'},
+				{shortcut: 'g c', title: 'Go to current radio (the one being played)'},
+				{shortcut: 'g x', title: 'Go to the track being played (x, as in a cross to locate the track/trax)'},
+			]
+
+			var menus = Array.from(document.querySelectorAll('command-menu'))
+			menus[0].commands = testCommands
+			menus[1].commands = r4Commands
+		</script>
+	</body>
 </html>
