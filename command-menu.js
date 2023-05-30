@@ -228,9 +228,10 @@ class CommandMenu extends LitElement {
 		console.log('selected command', command)
 		if (command.children) {
 			this.onArrowRight()
+		} else if (this.hasAttribute('modal')) {
+			this.close()
 		}
-		// if (selected?.action) selected.action()
-		if (this.hasAttribute('modal')) this.close()
+		if (command?.action) command.action()
 	}
 
 	open() {
