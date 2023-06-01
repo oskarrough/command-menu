@@ -178,7 +178,7 @@ class CommandMenu extends LitElement {
 	onEnter(command) {
 		if (!command) command = this.shadowRoot.activeElement.item
 		console.log('selected command', command)
-		if (command.children) {
+		if (command?.children) {
 			this.onArrowRight()
 		} else if (this.hasAttribute('modal')) {
 			this.close()
@@ -266,9 +266,10 @@ class CommandMenu extends LitElement {
 		`
 	}
 
-	renderCommandMenuItem({title, subtitle, shortcut, children}) {
+	renderCommandMenuItem(item) {
+		const {title, subtitle, shortcut, children} = item
 		return html`
-			<command-menu-item role="menuitem" tabIndex="0">
+			<command-menu-item role="menuitem" tabIndex="0" .item=${item}>
 				<command-menu-item-title>${title}</command-menu-item-title>
 				<command-menu-item-subtitle>${subtitle}</command-menu-item-subtitle>
 				${shortcut ? html`<kbd>${shortcut}</kbd>` : null} ${children ? html`&rarr;` : ''}
