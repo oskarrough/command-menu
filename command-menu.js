@@ -194,6 +194,8 @@ class CommandMenu extends LitElement {
 	close() {
 		if (this.hasAttribute('modal')) this.setAttribute('hidden', true)
 		this.showList = false
+		this.shadowRoot.querySelector('input[type=search]').value = ''
+		this.search = ''
 	}
 
 	toggle() {
