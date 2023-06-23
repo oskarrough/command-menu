@@ -167,7 +167,7 @@ class CommandMenu extends LitElement {
 		}
 		if (event.key === 'Enter') {
 			event.preventDefault()
-			this.onEnter(this.commands[0])
+			this.onEnter(this.filteredCommands[0])
 		}
 	}
 
